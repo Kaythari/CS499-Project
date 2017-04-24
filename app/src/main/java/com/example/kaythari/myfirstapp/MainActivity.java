@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         //create intent to AlarmReceiver Class
         final Intent alarmIntent = new Intent(this.context, AlarmReceiver.class);
 
-
         //Alarm on and off listener
         toggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,35 +50,24 @@ public class MainActivity extends AppCompatActivity {
 
                     int hour = timePicker.getCurrentHour();
                     int minute = timePicker.getCurrentMinute();
+
                     //convert to string
                     String s_hour = String.valueOf(hour);
                     String s_min = String.valueOf(minute);
+
                     //convert hours
                     if(hour > 12)
-                    {
                        s_hour = String.valueOf(hour-12);
-                    }
                     if(hour == 0)
-                    {
                         s_hour = "12";
-                    }
                     if(minute < 10)
-                    {
                         s_min = "0" + String.valueOf(minute);
-                    }
 
-                    //setting AM or PM
-                    String AM_PM;
-                    if(hour < 12)
-                    {
-                        AM_PM = "AM";
-                    }
-                    else
-                    {
-                        AM_PM="PM";
-                    }
-
+                    String AM_PM = (hour < 12) ? "AM" : "PM";
                     update_Alarm("Alarm set to " + s_hour + ":" + s_min + AM_PM);
+
+                    //indicate clock on is pressed
+                    alarmIntent.putExtra("extra", "on");
 
                     //pending intent that delays intent to specified time
                     pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -91,7 +79,9 @@ public class MainActivity extends AppCompatActivity {
                 {
                     update_Alarm("Alarm off");
                     alarmManager.cancel(pendingIntent); //cancel alarm
-                    //off button doesn't work yet...
+                    //tell clock off is pressed
+                    alarmIntent.putExtra("extra", "off");
+                    sendBroadcast(alarmIntent);
                 }
             }
         });
