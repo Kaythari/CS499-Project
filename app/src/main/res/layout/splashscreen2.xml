@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash2"
+    android:gravity="bottom"
+    android:id="@+id/splash2">
+
+    <!--<TextView-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="20dp"-->
+        <!--android:text="Stare into me and give me thy soul!"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textColor="#000000"-->
+        <!--android:textSize="30sp"-->
+        <!--android:paddingLeft="40dp"-->
+        <!--android:paddingRight="40dp"/>-->
+
+    <com.example.kaythari.myfirstapp.Typewriter
+        android:id="@+id/typewriter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"/>
+
+</LinearLayout>

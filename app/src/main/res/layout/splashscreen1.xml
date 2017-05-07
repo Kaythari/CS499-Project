@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash1"
+    android:id="@+id/splash1"
+    android:gravity="bottom">
+
+    <!--<TextView-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="15dp"-->
+        <!--android:text="Mortals! Thee bethink thee can rise on thy own? "-->
+        <!--android:textAlignment="center"-->
+        <!--android:textColor="#000000"-->
+        <!--android:textSize="30sp"-->
+        <!--android:paddingLeft="40dp"-->
+        <!--android:paddingRight="40dp"/>-->
+
+    <com.example.kaythari.myfirstapp.Typewriter
+        android:id="@+id/typewriter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="30sp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"/>
+</LinearLayout>
