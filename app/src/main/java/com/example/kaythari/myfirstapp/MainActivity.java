@@ -23,7 +23,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import java.util.Calendar;
 
-
 public class MainActivity extends AppCompatActivity {
 
     ToggleButton toggleButton;
@@ -34,13 +33,6 @@ public class MainActivity extends AppCompatActivity {
     PendingIntent pendingIntent;
     Calendar calender;
     Intent alarmIntent; //intent for alarm manager
-
-    //detect if home button is pressed
-//    protected void onUserLeaveHint()
-//    {
-//        Toast.makeText(MainActivity.this, "Don't you dare leave!", Toast.LENGTH_LONG).show();
-//        super.onUserLeaveHint();
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,22 +54,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-//        //Testing
-//        LinearLayout layout = (LinearLayout) findViewById(R.id.alarmClock);
-//        layout.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                Intent intent = new Intent(MainActivity.this, TouchToNext.class);
-//                startActivity(intent);
-//                return false;
-//            }
-//        });
-
         //initialize
         toggleButton = (ToggleButton) findViewById(R.id.alarmOnOff);
         timePicker = (TimePicker) findViewById(R.id.timePicker);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         updateAlarm = (TextView) findViewById(R.id.updateAlarm);
+
         //weekday repeat
         final CheckBox mon = (CheckBox) findViewById(R.id.monday);
         final CheckBox tue = (CheckBox) findViewById(R.id.tuesday);

@@ -87,7 +87,7 @@ public class AlarmRingtone extends Service  {
                     .setDefaults(Notification.FLAG_SHOW_LIGHTS)
                     .setLights(0xff00ff00, 300, 100)
                     .setPriority(Notification.PRIORITY_MAX)
-                    //.setAutoCancel(true)
+                    .setAutoCancel(true)
                     .build();
             nm.notify(0, notification);
 

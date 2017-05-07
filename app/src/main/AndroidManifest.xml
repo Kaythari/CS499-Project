@@ -2,16 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.kaythari.myfirstapp">
 
+    <!--for the shake sensor-->
     <uses-feature
         android:name = "android.hardware.sensor.accelerometer"
         android:required="true" />
-   <!--added-->
+    <!--for location-->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <!--added-->
+    <!--for notification-->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-
 
     <application
         android:allowBackup="true"

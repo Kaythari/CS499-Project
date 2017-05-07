@@ -30,7 +30,6 @@ public class ShakeEvent extends AppCompatActivity implements SensorEventListener
     int count;
     private TextView counter;
     private boolean b;
-
     ProgressBar progressBar;
 
     @Override

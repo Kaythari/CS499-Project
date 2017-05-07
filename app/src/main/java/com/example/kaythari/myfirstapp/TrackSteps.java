@@ -119,7 +119,6 @@ public class TrackSteps extends Activity implements SensorEventListener {
         sM.unregisterListener(this, s);
     }
 
-
     //disable back button
     @Override
     public void onBackPressed() {
