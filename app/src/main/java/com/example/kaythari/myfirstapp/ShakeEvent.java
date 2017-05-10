@@ -13,6 +13,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.List;
 
 
@@ -37,6 +39,11 @@ public class ShakeEvent extends AppCompatActivity implements SensorEventListener
     {
         super.onCreate(savedInstanceState);
 
+        //brightness at max
+        WindowManager.LayoutParams layout2 = getWindow().getAttributes();
+        layout2.screenBrightness = 1F;
+        getWindow().setAttributes(layout2);
+
         //fullscreen mode
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -47,7 +54,7 @@ public class ShakeEvent extends AppCompatActivity implements SensorEventListener
         Typeface custom = Typeface.createFromAsset(getAssets(), "fonts/Buried Bones.ttf");
         t.setTypeface(custom);
         t.setCharacterDelay(150);
-        t.animateText("Shake your sense out, you mortal!");
+        t.animateText("Shake your sense out right now!");
         count = 0;
 
         //Progressbar

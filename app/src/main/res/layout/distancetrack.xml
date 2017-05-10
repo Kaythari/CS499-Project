@@ -23,8 +23,8 @@
         android:id="@+id/stepcount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:textColor="#000000"
+        android:textSize="50dp"
+        android:textColor="@color/colorBlack"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15dp"
-        android:textColor="#000000"
+        android:textColor="@color/colorBlack"
         android:layout_below="@+id/CircleBar"
         android:layout_centerHorizontal="true" />
 

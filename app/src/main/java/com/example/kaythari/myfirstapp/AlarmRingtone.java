@@ -58,7 +58,7 @@ public class AlarmRingtone extends Service  {
         if(!this.isPlaying && id == 1)
         {
             //custom ringtone
-            Uri notification1 = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            Uri notification1 = RingtoneManager.getActualDefaultRingtoneUri(this, RingtoneManager.TYPE_RINGTONE);
             alarmRingtone = MediaPlayer.create(this, notification1);
             alarmRingtone.start();
             alarmRingtone.setLooping(true);
@@ -82,10 +82,8 @@ public class AlarmRingtone extends Service  {
                     .setContentText("How are you still asleep?")
                     .setContentIntent(pdI)
                     .setSmallIcon(R.drawable.notif_icon)
-                    .setTicker("Alarm ringing...")
                     .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 }) //added
                     .setDefaults(Notification.FLAG_SHOW_LIGHTS)
-                    .setLights(0xff00ff00, 300, 100)
                     .setPriority(Notification.PRIORITY_MAX)
                     .setAutoCancel(true)
                     .build();

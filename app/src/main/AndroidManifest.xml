@@ -12,11 +12,13 @@
     <!--for notification-->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!--for music path-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="nomercy"
+        android:icon="@mipmap/ic_launcher_round"
+        android:label="DevilO'Clock"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/CustomTheme">
@@ -32,7 +34,6 @@
         <activity android:name=".TouchToNext2" android:screenOrientation="portrait"></activity>
         <activity android:name=".TouchToNext3" android:screenOrientation="portrait"></activity>
         <activity android:name=".ShakeEvent" android:screenOrientation="portrait"></activity>
-        <activity android:name=".TrackSteps" android:screenOrientation="portrait"></activity>
         <activity android:name=".LocationTrack" android:screenOrientation="portrait"></activity>
 
         <receiver android:name=".AlarmReceiver"/>

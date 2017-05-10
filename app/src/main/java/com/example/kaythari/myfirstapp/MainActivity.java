@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import java.util.Calendar;
 
+
 public class MainActivity extends AppCompatActivity {
 
     ToggleButton toggleButton;
@@ -31,8 +33,13 @@ public class MainActivity extends AppCompatActivity {
     TextView updateAlarm;
     Context context;
     PendingIntent pendingIntent;
-    Calendar calender;
-    Intent alarmIntent; //intent for alarm manager
+
+//    //detect if home button is pressed
+//    protected void onUserLeaveHint()
+//    {
+//        Toast.makeText(MainActivity.this, "Don't you dare leave!", Toast.LENGTH_LONG).show();
+//        super.onUserLeaveHint();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.alarmclock);
 
         //request permission for write setting for custom ringtone
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!Settings.System.canWrite(this)) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if(!Settings.System.canWrite(this)) {
                 Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
                 intent.setData(Uri.parse("package:" + this.getPackageName()));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -59,15 +67,6 @@ public class MainActivity extends AppCompatActivity {
         timePicker = (TimePicker) findViewById(R.id.timePicker);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         updateAlarm = (TextView) findViewById(R.id.updateAlarm);
-
-        //weekday repeat
-        final CheckBox mon = (CheckBox) findViewById(R.id.monday);
-        final CheckBox tue = (CheckBox) findViewById(R.id.tuesday);
-        final CheckBox wed = (CheckBox) findViewById(R.id.wednesday);
-        final CheckBox thurs = (CheckBox) findViewById(R.id.thursday);
-        final CheckBox fri = (CheckBox) findViewById(R.id.friday);
-        final CheckBox sat = (CheckBox) findViewById(R.id.saturday);
-        final CheckBox sun = (CheckBox) findViewById(R.id.sunday);
         this.context = this;
 
         //custom ringtone
@@ -76,17 +75,36 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final Intent ringtone = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 ringtone.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
-                ringtone.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Alarm");
+                ringtone.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select alarm ringtone");
                 ringtone.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, (Uri) null);
                 startActivityForResult(ringtone, 0);
             }
         });
 
+        //custom your own music
+        Button button2 = (Button) findViewById(R.id.music);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent picker = new Intent(Intent.ACTION_GET_CONTENT);
+                picker.setType("audio/mpeg");
+                Intent intent = Intent.createChooser(picker, "Select your music");
+                startActivityForResult(intent, 1);
+            }
+        });
+
+        final Calendar calender = Calendar.getInstance();
+        final Intent alarmIntent = new Intent(this.context, AlarmReceiver.class);
+
         //Alarm on and off listener
         toggleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (toggleButton.isChecked()) {
+                if(toggleButton.isChecked())
+                {
+                    calender.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
+                    calender.set(Calendar.MINUTE, timePicker.getCurrentMinute());
+
                     int hour = timePicker.getCurrentHour();
                     int minute = timePicker.getCurrentMinute();
 
@@ -95,39 +113,27 @@ public class MainActivity extends AppCompatActivity {
                     String s_min = String.valueOf(minute);
 
                     //convert hours
-                    if (hour > 12)
+                    if(hour > 12)
                         s_hour = String.valueOf(hour - 12);
-                    if (hour == 0)
+                    if(hour == 0)
                         s_hour = "12";
-                    if (minute < 10)
+                    if(minute < 10)
                         s_min = "0" + String.valueOf(minute);
 
                     String AM_PM = (hour < 12) ? "AM" : "PM";
                     update_Alarm("Alarm set to " + s_hour + ":" + s_min + AM_PM + ".");
 
-                    //check days of week is checked
-                    if (mon.isChecked()) {
-                        alarmOnPressed(2);
-                    }
-                    if (tue.isChecked()) {
-                        alarmOnPressed(3);
-                    }
-                    if (wed.isChecked()) {
-                        alarmOnPressed(4);
-                    }
-                    if (thurs.isChecked()) {
-                        alarmOnPressed(5);
-                    }
-                    if (fri.isChecked()) {
-                        alarmOnPressed(6);
-                    }
-                    if (sat.isChecked()) {
-                        alarmOnPressed(7);
-                    }
-                    if (sun.isChecked()) {
-                        alarmOnPressed(1);
-                    }
-                } else {
+                    //indicate clock on is pressed
+                    alarmIntent.putExtra("extra", "on");
+
+                    //pending intent that delays intent to specified time
+                    pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    //set alarm manager
+                    alarmManager.set(alarmManager.RTC_WAKEUP, calender.getTimeInMillis(), pendingIntent);
+                }
+                else
+                {
                     update_Alarm("Alarm off");
                     alarmManager.cancel(pendingIntent); //cancel alarm
                     //tell clock off is pressed
@@ -137,29 +143,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     private void update_Alarm(String s) {
         updateAlarm.setText(s);
-    }
-
-    //indicate alarm on is pressed and set the pending intent to alarm manager
-    public void alarmOnPressed(int weekday)
-    {
-        calender = Calendar.getInstance();
-        alarmIntent = new Intent(this, AlarmReceiver.class);
-        calender.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
-        calender.set(Calendar.MINUTE, timePicker.getCurrentMinute());
-        calender.set(Calendar.DAY_OF_WEEK, weekday);
-        calender.set(Calendar.SECOND, 0);
-        calender.set(Calendar.MILLISECOND, 0);
-        //indicate clock on is pressed
-        alarmIntent.putExtra("extra", "on");
-        //pending intent that delays intent to specified time
-        pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        //set alarm manager
-        //alarmManager.set(alarmManager.RTC_WAKEUP, calender.getTimeInMillis(), pendingIntent);
-        //wake up for weekday
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calender.getTimeInMillis(), 1 * 60 * 60 * 1000, pendingIntent);
     }
 
     //part of custom ringtone
@@ -167,17 +152,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 0 && resultCode == RESULT_OK) {
             final Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-            if(uri != null)
-                RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_ALARM, uri);
+            if(uri != null) {
+                RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_RINGTONE, uri);
+            }
+        } else if(requestCode == 1 && resultCode == RESULT_OK) {
+            if(data.getData() != null) {
+                Toast.makeText(this, "Music selected", Toast.LENGTH_SHORT).show();
+                RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_RINGTONE, data.getData());
+            }
         }
-    }
-
-    //detect if home button is pressed
-    protected void onStop()
-    {
-        Toast.makeText(MainActivity.this, "Don't you dare leave!", Toast.LENGTH_LONG).show();
-        super.onStop();
-
     }
 }
 

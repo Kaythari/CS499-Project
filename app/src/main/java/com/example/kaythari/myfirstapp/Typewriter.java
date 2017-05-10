@@ -8,17 +8,16 @@ import android.util.AttributeSet;
  * Created by Kaythari on 5/1/2017.
  */
 
+//this class is for a custom font effect
 public class Typewriter extends android.support.v7.widget.AppCompatTextView {
 
     private CharSequence text;
     private int i;
     private long delay = 500; //Default 500ms delay
 
-
     public Typewriter(Context context) {
         super(context);
     }
-
     public Typewriter(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

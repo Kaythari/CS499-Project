@@ -39,6 +39,23 @@ public class LocationTrack extends AppCompatActivity implements LocationListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //brightness at max
+        WindowManager.LayoutParams layout2 = getWindow().getAttributes();
+        layout2.screenBrightness = 1F;
+        getWindow().setAttributes(layout2);
+
+        //check if GPS is on, prompt to setting if not
+        int off = 0;
+        try {
+            off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            Toast.makeText(this, "GPS is turned off", Toast.LENGTH_SHORT).show();
+        }
+        if(off == 0){
+            Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(onGPS);
+        }
+
         //fullscreen mode
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -49,7 +66,7 @@ public class LocationTrack extends AppCompatActivity implements LocationListener
         Typeface custom = Typeface.createFromAsset(getAssets(), "fonts/Buried Bones.ttf");
         t.setTypeface(custom);
         t.setCharacterDelay(150);
-        t.animateText("Walk your life out!");
+        t.animateText("Get your feet moving, hurry up!");
 
         textview = (TextView) findViewById(R.id.stepcount);
         textview2 = (TextView) findViewById(R.id.walked);
@@ -67,7 +84,7 @@ public class LocationTrack extends AppCompatActivity implements LocationListener
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 1, this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, (float) 1.5, this);
     }
 
     @Override
@@ -76,6 +93,8 @@ public class LocationTrack extends AppCompatActivity implements LocationListener
         if(latitude == 0.0 && longitude == 0.0) {
             latitude = location.getLatitude();
             longitude = location.getLongitude();
+            count = 0;
+
         } else {
             //previous latitude and longitude
             double pLat = latitude;
@@ -99,8 +118,7 @@ public class LocationTrack extends AppCompatActivity implements LocationListener
             distanceTraveled += (earthKm * c);
             textview2.setText("You have walked " + Math.round(distanceTraveled) + " meter(s).");
 
-            count = 0;
-            if(earthKm * c > 0.5)
+            if(earthKm * c > 1.5)
             {
                 count++;
                 textview.setText(Integer.toString(count));
@@ -127,6 +145,11 @@ public class LocationTrack extends AppCompatActivity implements LocationListener
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    //disable back button
+    @Override
+    public void onBackPressed() {
     }
 }
 

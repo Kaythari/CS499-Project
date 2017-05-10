@@ -5,5 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorGreen">#00FF00</color>
     <color name="colorGlass">#c9dbdc</color>
-    <color name="colorRed">#FF4500</color>
+    <color name="colorRed">#c60e1c</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#151515</color>
 </resources>

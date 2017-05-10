@@ -11,6 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by Kaythari on 4/27/2017.
@@ -20,6 +21,11 @@ public class TouchToNext2 extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //brightness at max
+        WindowManager.LayoutParams layout2 = getWindow().getAttributes();
+        layout2.screenBrightness = 1F;
+        getWindow().setAttributes(layout2);
 
         //fullscreen mode
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -31,7 +37,7 @@ public class TouchToNext2 extends Activity {
         Typeface custom = Typeface.createFromAsset(getAssets(), "fonts/Buried Bones.ttf");
         t.setTypeface(custom);
         t.setCharacterDelay(150);
-        t.animateText("Stare into me and give me your soul!");
+        t.animateText("Give me your soul and I will help you!");
 
         //Testing
         LinearLayout layout = (LinearLayout) findViewById(R.id.splash2);
